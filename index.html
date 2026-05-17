@@ -3,6 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="description" content="Ứng dụng học từ vựng HSK 1-6 với flashcard, phát âm, danh sách từ vựng và bài đọc luyện đọc theo từng cấp độ.">
+<meta name="keywords" content="HSK, HSK1, HSK2, HSK3, HSK4, HSK5, HSK6, học tiếng Trung, từ vựng tiếng Trung, flashcard HSK, luyện đọc HSK">
+<meta name="author" content="Phuong Tran">
+<meta name="robots" content="index, follow">
+<meta name="language" content="Vietnamese">
+<meta name="theme-color" content="#4a90e2">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="HSK Vocabulary Learning App">
+<meta property="og:description" content="Học từ vựng HSK 1-6 bằng flashcard, danh sách từ và bài đọc luyện đọc theo cấp độ.">
+<meta property="og:image" content="cover.jpg">
+<meta property="og:locale" content="vi_VN">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="HSK Vocabulary Learning App">
+<meta name="twitter:description" content="Ứng dụng học từ vựng HSK có flashcard và bài đọc luyện đọc.">
+<meta name="twitter:image" content="cover.jpg">
+
+<link rel="canonical" href="https://your-domain.com/">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "EducationalApplication",
+  "name": "HSK Vocabulary Learning App",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Web",
+  "description": "Ứng dụng học từ vựng HSK 1-6 với flashcard và bài đọc luyện đọc.",
+  "inLanguage": "vi",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+
+        function renderReading() {
+            const data = readingData[currentLevel];
+            if (!data) return;
+
+            document.getElementById('readingTitle').textContent = data.title;
+            document.getElementById('readingContent').innerHTML = data.content;
+        }
+
+
+</script>
+
     <title>HSK Vocabulary Learning App</title>
     <style>
         :root {
@@ -275,7 +323,31 @@
             font-size: 0.85rem;
             margin-top: 10px;
         }
-    </style>
+    
+        .reading-content {
+            line-height: 2;
+            font-size: 1.2rem;
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+        }
+
+        .reading-content p {
+            margin-bottom: 20px;
+        }
+
+        .reading-content .pinyin {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .reading-content .translation {
+            color: #4a90e2;
+            margin-top: 8px;
+        }
+
+</style>
 </head>
 <body>
 
@@ -291,6 +363,7 @@
         <div class="mode-container">
             <button class="btn btn-mode active" id="btnModeFlashcard" onclick="switchMode('flashcard')">Chế độ Thẻ (Flashcard)</button>
             <button class="btn btn-mode" id="btnModeList" onclick="switchMode('list')">Danh sách từ vựng</button>
+            <button class="btn btn-mode" id="btnModeReading" onclick="switchMode('reading')">Bài đọc</button>
         </div>
 
         <div id="flashcardView" class="flashcard-view">
@@ -324,9 +397,112 @@
             <div class="vocab-grid" id="vocabGrid">
                 </div>
         </div>
+    
+        <div id="readingView" class="list-view" style="display:none;">
+            <h2 id="readingTitle">Bài đọc HSK 1</h2>
+            <div id="readingContent" class="reading-content"></div>
+        </div>
+
     </main>
 
     <script>
+        
+        const readingData = {
+			1: {
+				title: "HSK 1 - Tôi là học sinh",
+				content: `
+					<p>
+						我叫小明。我是中国学生。我今年十八岁。<br>
+						<span class="pinyin">Wǒ jiào Xiǎomíng. Wǒ shì Zhōngguó xuéshēng. Wǒ jīnnián shíbā suì.</span>
+					</p>
+
+					<p class="translation">
+						Tôi tên là Tiểu Minh. Tôi là học sinh Trung Quốc. Năm nay tôi 18 tuổi.
+					</p>
+
+					<p>
+						我喜欢学习汉语，也喜欢喝茶。<br>
+						<span class="pinyin">Wǒ xǐhuān xuéxí Hànyǔ, yě xǐhuān hē chá.</span>
+					</p>
+
+					<p class="translation">
+						Tôi thích học tiếng Trung và cũng thích uống trà.
+					</p>
+				`
+			},
+
+			2: {
+				title: "HSK 2 - Cuối tuần",
+				content: `
+					<p>
+						星期天，我和朋友一起去公园。天气很好，我们很开心。<br>
+						<span class="pinyin">Xīngqītiān, wǒ hé péngyou yìqǐ qù gōngyuán.</span>
+					</p>
+
+					<p class="translation">
+						Chủ nhật tôi cùng bạn đi công viên. Thời tiết rất đẹp.
+					</p>
+				`
+			},
+
+			3: {
+				title: "HSK 3 - Du lịch Bắc Kinh",
+				content: `
+					<p>
+						去年夏天，我第一次去北京旅游。北京有很多有名的地方。<br>
+						<span class="pinyin">Qùnián xiàtiān, wǒ dì-yī cì qù Běijīng lǚyóu.</span>
+					</p>
+
+					<p class="translation">
+						Mùa hè năm ngoái tôi lần đầu tiên đi du lịch Bắc Kinh.
+					</p>
+				`
+			},
+
+			4: {
+				title: "HSK 4 - Công nghệ",
+				content: `
+					<p>
+						现在很多年轻人喜欢使用互联网学习语言。<br>
+						<span class="pinyin">Xiànzài hěn duō niánqīngrén xǐhuān shǐyòng hùliánwǎng xuéxí yǔyán.</span>
+					</p>
+
+					<p class="translation">
+						Hiện nay nhiều người trẻ thích dùng Internet để học ngoại ngữ.
+					</p>
+				`
+			},
+
+			5: {
+				title: "HSK 5 - Thành công",
+				content: `
+					<p>
+						如果一个人想取得成功，他必须坚持自己的目标。<br>
+						<span class="pinyin">Rúguǒ yí gè rén xiǎng qǔdé chénggōng, tā bìxū jiānchí zìjǐ de mùbiāo.</span>
+					</p>
+
+					<p class="translation">
+						Nếu một người muốn thành công, anh ấy phải kiên trì với mục tiêu.
+					</p>
+				`
+			},
+
+			6: {
+				title: "HSK 6 - Xã hội hiện đại",
+				content: `
+					<p>
+						随着科技的发展，人们的生活方式发生了巨大的变化。<br>
+						<span class="pinyin">Suízhe kējì de fāzhǎn, rénmen de shēnghuó fāngshì fāshēngle jùdà de biànhuà.</span>
+					</p>
+
+					<p class="translation">
+						Cùng với sự phát triển công nghệ, lối sống của con người đã thay đổi lớn.
+					</p>
+				`
+			}
+		};
+
+
         // Dữ liệu từ vựng thô được trích xuất trực tiếp từ file HSK.txt của bạn
         const rawData = {
             1: "的，我，你，是，了，不，在，他，我们，好，有，这，会，吗，什么，说，她，想，一，很，人，那，来，都，个，能，去，和，做，上，没有，看，怎么，现在，点，呢，太，里，听，谁，多，时候，下，谢谢，先生，喜欢，大，东西，小，叫，爱，年，请，回，工作，钱，吃，开，家，哪，朋友，妈妈，今天，几，爸爸，些，怎么样，对不起，住，三，高兴，买，医生，哪儿，名字，认识，坐，喝，写，月，号，狗，岁，看见，打电话，喂，儿子，漂亮，分钟，再见，本，明天，多少，块，女儿，小姐，衣服，水，学校，电影，书，四，五，医院，少，没关系，飞机，二，电视，读，后面，昨天，睡觉，六，老师，星期，十，猫，电脑，热，学生，下午，字，学习，冷，前面，八，中国，七，菜，桌子，出租车，天气，茶，九，商店，椅子，同学，一点儿，苹果，饭店，中午，上午，水果，杯子，下雨，米饭，北京，汉语，不客气",
@@ -392,14 +568,37 @@
 
         // Chuyển đổi giao diện học (Thẻ <-> Danh sách)
         function switchMode(mode) {
-            currentMode = mode;
-            document.getElementById('btnModeFlashcard').classList.toggle('active', mode === 'flashcard');
-            document.getElementById('btnModeList').classList.toggle('active', mode === 'list');
-            
-            document.getElementById('flashcardView').style.display = mode === 'flashcard' ? 'flex' : 'none';
-            document.getElementById('listView').style.display = mode === 'list' ? 'block' : 'none';
-            
-            loadWords();
+            document.getElementById('flashcardView').style.display = 'none';
+            document.getElementById('listView').style.display = 'none';
+
+            const readingView = document.getElementById('readingView');
+            if (readingView) {
+                readingView.style.display = 'none';
+            }
+
+            document.getElementById('btnModeFlashcard').classList.remove('active');
+            document.getElementById('btnModeList').classList.remove('active');
+
+            const btnReading = document.getElementById('btnModeReading');
+            if (btnReading) {
+                btnReading.classList.remove('active');
+            }
+
+            if (mode === 'flashcard') {
+                document.getElementById('flashcardView').style.display = 'flex';
+                document.getElementById('btnModeFlashcard').classList.add('active');
+            }
+
+            if (mode === 'list') {
+                document.getElementById('listView').style.display = 'block';
+                document.getElementById('btnModeList').classList.add('active');
+            }
+
+            if (mode === 'reading') {
+                document.getElementById('readingView').style.display = 'block';
+                document.getElementById('btnModeReading').classList.add('active');
+                renderReading();
+            }
         }
 
         /* --- XỬ LÝ CHẾ ĐỘ FLASHCARD --- */
@@ -504,7 +703,17 @@
 
         // Chạy ứng dụng khi tải xong trang
         window.onload = init;
-    </script>
+    
+        function renderReading() {
+            const data = readingData[currentLevel];
+            if (!data) return;
+
+            document.getElementById('readingTitle').textContent = data.title;
+            document.getElementById('readingContent').innerHTML = data.content;
+        }
+
+
+</script>
 </body>
 <style>
     .footer {
@@ -531,6 +740,7 @@
         font-weight: bold;
     }
 </style>
+
 <div class="footer">
     <a href="https://buymeacoffee.com/phuongtran" target="_blank" class="coffee-btn">☕ Buy me a coffee</a>
     <br>
